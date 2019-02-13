@@ -2,24 +2,82 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <style>
+  table, th, td {
+  border: 1px solid blue;
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>Het drijvende Geepje</title>
 </head>
 <body>
 
-<button id="verhuurbutton"  onclick="ophalen()"> Klik hier voor alle boten</button>
-<input type ="text" id="vakjesnaam" value="jojo">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<div alleschepentabel>
+<button id="verhuurbutton" > Klik hier voor één boot</button></br>
+<table>
+        <tr>
+            <th>Name of schip</th>
+
+        </tr>
+        <tr>
+            <td id="naamschip"> Antwoord</td>
+
+        </tr>
+</table></br></br></br>
+</div>
+
+<button id="verhuurbutton2" > Klik hier voor alle schips</button></br>
+<input type ="text" id="vakjesnaam" value="Titanic"></br>
+<table>
+        <tr>
+            <th>Name of the Schips</th>
+
+        </tr>
+        <tr>
+            <td id="naamschepen"> Antwoord</td>
+
+        </tr>
+</table>
+
 <script>
-    function ophalen(){
-        $('#vakjesnaam').hide();
-        var vakjesnaam = bootnaamvak;
-        var bootnaam = document.getElementById("vakjesnaam").value;
-        alert("De boot " + bootnaam + " is opgehaald");
-        }
 
         $(document).on('click','#verhuurbutton', function(){
-            alert("3");
+            alert("Kijk uit voor de Duikboot");
+            $.ajax({
+                type: "get",
+                url: "/schip",
+                success: function(result){
+                    returnfunction(result);
+                }
+            });
         });
+
+        function returnfunction(antwoordserver){
+            $('#naamschip').html(antwoordserver.naam);
+        }
+
+         $(document).on('click','#verhuurbutton2', function(){
+            alert("Kijk uit voor alle Duikboten");
+            $.ajax({
+                type: "get",
+                url: "/schepen",
+                success: function(result){
+                console.log(result);
+                    returnfunction2(result);
+
+                }
+            });
+        });
+
+        function returnfunction2(antwoordserver){
+            $('#naamschepen').html(antwoordserver.naam);
+            var opbouwString = "<table border=1>";
+            for(i=0;i<antwoordserver.length;i++){
+            opbouwString += "<tr><td>"+antwoordserver[i].naam+"</td></tr>";
+            }
+            opbouwString += "</table>";
+            document.getElementById('naamschepen').innerHTML = opbouwString;
+
+            }
 
 </script>
 

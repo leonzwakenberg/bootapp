@@ -1,7 +1,9 @@
 package com.capgemini.springboot.api;
 
 
+import com.capgemini.springboot.controller.SchipRepository;
 import com.capgemini.springboot.controller.SchipService;
+import com.capgemini.springboot.module.Schip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,11 +12,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 
 public class SchipEndPoint {
+    @Autowired
+    private SchipRepository mijnSchipRepository;
+        //mijnSchipRepository is de identifier
 
     @GetMapping("/schip")
-    public String varen(){
+    public Schip varen(){  // was eerst String, maar veranderd naar de Schip (entity) om alles terug te sturen
         System.out.println("varen");
-        return "Huren";
+        Schip hetSchip = new Schip();
+        hetSchip.naam = "Das Boot";
+        Schip vliegendeHollander = mijnSchipRepository.save(hetSchip);
+       // Schip vliegendeHollander = mijnSchipRepository.save(new Schip());
+        return vliegendeHollander;
+    }
+
+    @GetMapping("/schepen")
+    public Iterable<Schip> geefAlleSchepen(){
+        Iterable<Schip> scheepHaven = mijnSchipRepository.findAll();
+        return scheepHaven;
     }
 
 }
